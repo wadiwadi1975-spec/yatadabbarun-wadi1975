@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+ <head>
+  <script>
+   (function () {
+  var proto = XMLHttpRequest.prototype;
+  var open = proto.open, setRequestHeader = proto.setRequestHeader, send = proto.send;
+  var TOKEN_KEY = 'base44_access_token';
+  var storedTokenHeader = function () {
+    try { return 'Bearer ' + localStorage.getItem(TOKEN_KEY); } catch (e) { return null; }
+  };
+  var forgetStoredToken = function () {
+    try { localStorage.removeItem(TOKEN_KEY); localStorage.removeItem('token'); } catch (e) {}
+  };
+
+  proto.open = function (method, url) {
+    this.__b44IsAuthCheck = /\/entities\/User\/me(\?|$)/.test(url);
+    return open.apply(this, arguments);
+  };
+
+  proto.setRequestHeader = function (name, value) {
+    if (this.__b44IsAuthCheck && name.toLowerCase() === 'authorization' && value === storedTokenHeader()) {
+      this.__b44SentToken = value;
+    }
+    return setRequestHeader.call(this, name, value);
+  };
+
+  proto.send = function () {
+    this.addEventListener('loadend', function () {
+      var rejectedTokenStillStored = this.status === 401 && this.__b44SentToken === storedTokenHeader();
+      if (rejectedTokenStillStored) forgetStoredToken();
+    });
+    return send.apply(this, arguments);
+  };
+})();
+  </script>
+  <meta charset="utf-8"/>
+  <link href="/media/8e61f802_6515bc4ef_generated_image.png" rel="icon" type="image/png"/>
+  <link href="/media/8e61f802_6515bc4ef_generated_image.png" rel="apple-touch-icon"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="/manifest.json" rel="manifest"/>
+  <title>
+   TWQEET Intelligence
+  </title>
+  
+<script>
+(function(){
+  var APPID="6a3b33c7c2f8afeb2924fde3";
+  var MAP={"entities_Author": "entities_Author.json", "entities_Product": "entities_Product.json", "entities_Product_q_7B_22featured_22_true_7D": "entities_Product_q_7B_22featured_22_true_7D.json", "entities_Product_sort_created_date": "entities_Product_sort_created_date.json", "entities_VerseReference": "entities_VerseReference.json", "entities_Work": "entities_Work.json", "api_apps_public_prod_public_settings_by_id_6a3b33c7c2f8afeb2924fde3": "api_apps_public_prod_public_settings_by_id_6a3b33c7c2f8afeb2924fde3.json"};
+  function keyOf(p){
+    var id='/api/apps/'+APPID+'/';
+    var k = p.indexOf(id)===0 ? p.slice(id.length) : p.replace(/^\//,'');
+    return k.replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+  }
+  function localize(u){
+    try{
+      var p=String(u).replace(/^https?:\/\/[^\/]+/,'');
+      if(p.indexOf('/api/')<0) return null;
+      var f=MAP[keyOf(p)];
+      return f?('/api-data/'+f):null;
+    }catch(e){return null;}
+  }
+  try{
+    var XO=XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open=function(m,u){
+      var l=localize(u);
+      if(l&&(m==='GET'||m==='HEAD')){ arguments[1]=l; }
+      return XO.apply(this,arguments);
+    };
+  }catch(e){}
+  try{
+    var OF=window.fetch?window.fetch.bind(window):null;
+    if(OF){
+      window.fetch=function(input,init){
+        try{
+          var u=typeof input==='string'?input:(input&&input.url)||'';
+          var mm=(init&&init.method)||(typeof input==='object'&&input&&input.method)||'GET';
+          var upper=String(mm).toUpperCase();
+          var p=String(u).replace(/^https?:\/\/[^\/]+/,'');
+          var l=localize(u);
+          if(l&&(upper==='GET'||upper==='HEAD')) return OF(l,{cache:'no-store'});
+          if(p.indexOf('/api/')>=0&&(upper==='GET'||upper==='HEAD')){
+            if(/\/entities\/User\/me$/.test(p))
+              return Promise.resolve(new Response(JSON.stringify({detail:'Not authenticated.'}),{status:401,headers:{'Content-Type':'application/json'}}));
+            if(/\/entities\/[^/?\s]+$/.test(p))
+              return Promise.resolve(new Response('[]',{status:200,headers:{'Content-Type':'application/json'}}));
+          }
+          if(p.indexOf('/api/')>=0&&upper!=='GET'&&upper!=='HEAD'&&/log-user-in-app|analytics|track|batch/.test(p))
+            return Promise.resolve(new Response('{}',{status:200,headers:{'Content-Type':'application/json'}}));
+        }catch(e){}
+        return OF.apply(window,arguments);
+      };
+    }
+  }catch(e){}
+})();
+</script>
+<script crossorigin="" src="/assets/index-D5NVTd0O.js" type="module">
+  </script>
+  <link crossorigin="" href="/assets/index-BW7fxJGf.css" rel="stylesheet"/>
+  <script type="module">
+   if (window.self === window.top) {
+  let lastPath = "";
+  function getPageNameFromPath(path) {
+    const segments = path.split("/").filter(Boolean);
+    return segments[0] || null;
+  }
+  function trackPageView() {
+    const path = window.location.pathname;
+    if (path === lastPath) return;
+    lastPath = path;
+    const pageName = getPageNameFromPath(path) || "home";
+    const appId = "6a3b33c7c2f8afeb2924fde3";
+    if (!appId) return;
+    fetch(`/api/app-logs/${appId}/log-user-in-app/${pageName}`, {
+      method: "POST",
+    }).catch(() => {});
+  }
+  const originalPushState = history.pushState.bind(history);
+  history.pushState = function (...args) {
+    originalPushState(...args);
+    trackPageView();
+  };
+  const originalReplaceState = history.replaceState.bind(history);
+  history.replaceState = function (...args) {
+    originalReplaceState(...args);
+    trackPageView();
+  };
+  window.addEventListener("popstate", trackPageView);
+  trackPageView();
+}
+  </script>
+  <meta content="Bait-aldhahab-jewellery app " name="description"/>
+  <meta content="TWQEET Intelligence" property="og:title"/>
+  <meta content="Bait-aldhahab-jewellery app " property="og:description"/>
+  <meta content="/media/36bfe964_11f942428_newlogo.png" property="og:image"/>
+  <meta content="https://yatadabbrun.base44.app" property="og:url"/>
+  <meta content="website" property="og:type"/>
+  <meta content="TWQEET Intelligence" property="og:site_name"/>
+  <meta content="TWQEET Intelligence" name="twitter:title"/>
+  <meta content="Bait-aldhahab-jewellery app " name="twitter:description"/>
+  <meta content="/media/36bfe964_11f942428_newlogo.png" name="twitter:image"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="https://yatadabbrun.base44.app" name="twitter:url"/>
+  <script>
+   (function () {
+  var titles = {"/login": "Login | TWQEET Intelligence", "/register": "Register | TWQEET Intelligence", "/forgot-password": "Forgot Password | TWQEET Intelligence", "/reset-password": "Reset Password | TWQEET Intelligence", "/rakni": "Rakni / Rakni Login | TWQEET Intelligence", "/rakni/register": "Rakni / Rakni Register | TWQEET Intelligence", "/rakni/app": "Rakni / Rakni App | TWQEET Intelligence", "/": "TWQEET Intelligence", "/jiza": "Jiza / Jiza Home | TWQEET Intelligence", "/yatadabrun": "Yatadabrun / Yatadabrun Home | TWQEET Intelligence", "/quran": "Yatadabrun / Quran | TWQEET Intelligence", "/others": "Yatadabrun / Others Home | TWQEET Intelligence", "/ghareeb": "Yatadabrun / Ghareeb Home | TWQEET Intelligence", "/about": "Yatadabrun / About | TWQEET Intelligence", "/comparative": "Yatadabrun / Surah Comparative | TWQEET Intelligence", "/listen": "Yatadabrun / Listen | TWQEET Intelligence", "/tadabbur": "Yatadabrun / Tadabbur Home | TWQEET Intelligence", "/tadabbur/notebook": "Yatadabrun / Tadabbur Notebook | TWQEET Intelligence", "/jewellery": "Jewellery / Home | TWQEET Intelligence", "/products": "Jewellery / Products | TWQEET Intelligence", "/calculator": "Jewellery / Calculator | TWQEET Intelligence", "/design": "Jewellery / Design | TWQEET Intelligence", "/try-on": "Jewellery / Try On | TWQEET Intelligence", "/account": "Jewellery / Account | TWQEET Intelligence", "/contact": "Jewellery / Contact | TWQEET Intelligence", "/yatadabrun/yatadabrunhome": "TWQEET Intelligence", "/yatadabrun/yatadabrun-home": "TWQEET Intelligence"};
+  // PascalCase boundaries -> "-", mirroring _PASCAL_BOUNDARY_RE without lookbehind
+  // (old Safari fails to PARSE a lookbehind, taking the whole script down).
+  var dashed = function (s) {
+    return s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").replace(/([A-Z])([A-Z][a-z])/g, "$1-$2");
+  };
+  var decode = function (s) {
+    // A %2F inside ONE segment must not become a structural separator: /blog/foo%2Fbar is a
+    // dynamic slug, and letting it split would match a static /blog/foo/bar and write ITS title.
+    try { var d = decodeURIComponent(s); return d.indexOf("/") < 0 ? d : s; } catch (e) { return s; }
+  };
+  var segments = function (path) { return path.split("/").filter(Boolean).map(decode); };
+  var norm = function (path) {
+    var parts = segments(path).map(function (s) { return dashed(s).toLowerCase(); });
+    return parts.length ? "/" + parts.join("/") : "/";
+  };
+  var lastPath = location.pathname, written = document.title, on = true;
+  var sync = function () {
+    // Path only: a hash/query change is the same page, and the SDK strips its own auth
+    // params with replaceState -- neither must clobber a server-rendered title in place.
+    if (!on || location.pathname === lastPath) return;
+    lastPath = location.pathname;
+    if (document.title !== written) { on = false; return; }
+    // Write ONLY a title the map proves. An unmapped path is a dynamic route (/blog/:slug) the
+    // map cannot carry, and writing a placeholder there is destructive, not merely vague: the
+    // prerender worker runs no setUserAgent, so its capture browser reads as human and executes
+    // this script, and coordinator.js's settle wait explicitly tolerates a full navigation --
+    // a redirect landing on an unmapped path would bake the placeholder into the stored
+    // snapshot. Leaving the title alone degrades to today's behavior instead.
+    // Exact lookup only. A dash-stripped retry here would let a genuinely different /set-up
+    // claim /setup: the map carries a dash-free key only where a PascalCase boundary put the
+    // dashes there, and the client cannot tell the two apart. The map emits every reachable
+    // shape per segment instead (_client_url_variants).
+    var title = titles[norm(location.pathname)];
+    if (title === undefined) return;
+    document.title = title;
+    // Re-read: the setter stores verbatim but the getter strips and collapses whitespace, so
+    // keeping the assigned string would make the next sync() read our own write as the app's.
+    written = document.title;
+  };
+  var wrap = function (fn) {
+    // The history entry is already pushed by the time sync() runs, so a throw here would
+    // surface inside the host app's router and break navigation. This is injected into apps
+    // we cannot test, so it swallows rather than trusting the trace.
+    return function () {
+      var r = fn.apply(this, arguments);
+      try { sync(); } catch (e) {}
+      return r;
+    };
+  };
+  history.pushState = wrap(history.pushState);
+  history.replaceState = wrap(history.replaceState);
+  window.addEventListener("popstate", sync);
+})();
+  </script>
+  <meta content="yes" name="mobile-web-app-capable"/>
+  <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+  <meta content="TWQEET Intelligence" name="apple-mobile-web-app-title"/>
+  <link href="https://yatadabbrun.base44.app" rel="canonical"/>
+  <script data-seo-source="builder" type="application/ld+json">
+   {"name": "TWQEET Intelligence", "@context": "https://schema.org", "@type": "WebSite", "url": "https://yatadabbrun.base44.app"}
+  </script>
+  <script data-seo-source="builder" type="application/ld+json">
+   {"name": "TWQEET Intelligence", "logo": "/media/7a2aaae7_4a7697543_logo.png", "@context": "https://schema.org", "@type": "Organization", "url": "https://yatadabbrun.base44.app"}
+  </script>
+  <script async="true" data-app-id="6a3b33c7c2f8afeb2924fde3" data-platform-url="https://app.base44.com" src="/static/js/badge.js">
+  </script>
+ </head>
+ <body>
+  <div id="root">
+   <div data-seo-source="builder" id="seo-snapshot" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">
+    <main>
+     <header>
+      <h1>
+       TWQEET Intelligence
+      </h1>
+      <p>
+       Bait-aldhahab-jewellery app
+      </p>
+     </header>
+     <nav aria-label="Pages">
+      <h2>
+       Pages
+      </h2>
+      <ul>
+       <li>
+        <a href="/login">
+         Login
+        </a>
+        — Login on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/register">
+         Register
+        </a>
+        — Register on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/forgot-password">
+         Forgot Password
+        </a>
+        — Forgot Password on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/reset-password">
+         Reset Password
+        </a>
+        — Reset Password on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/rakni">
+         Rakni Login
+        </a>
+        — Rakni / Rakni Login on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/rakni/register">
+         Rakni Register
+        </a>
+        — Rakni / Rakni Register on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/rakni/app">
+         Rakni App
+        </a>
+        — Rakni / Rakni App on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/jiza">
+         Jiza Home
+        </a>
+        — Jiza / Jiza Home on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/">
+         Yatadabrun Home
+        </a>
+        — Yatadabrun / Yatadabrun Home on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/quran">
+         Quran
+        </a>
+        — Yatadabrun / Quran on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/others">
+         Others Home
+        </a>
+        — Yatadabrun / Others Home on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/ghareeb">
+         Ghareeb Home
+        </a>
+        — Yatadabrun / Ghareeb Home on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/about">
+         About
+        </a>
+        — Yatadabrun / About on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/comparative">
+         Surah Comparative
+        </a>
+        — Yatadabrun / Surah Comparative on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/listen">
+         Listen
+        </a>
+        — Yatadabrun / Listen on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/tadabbur">
+         Tadabbur Home
+        </a>
+        — Yatadabrun / Tadabbur Home on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/tadabbur/notebook">
+         Tadabbur Notebook
+        </a>
+        — Yatadabrun / Tadabbur Notebook on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/jewellery">
+         Home
+        </a>
+        — Jewellery / Home on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/products">
+         Products
+        </a>
+        — Jewellery / Products on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/calculator">
+         Calculator
+        </a>
+        — Jewellery / Calculator on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/design">
+         Design
+        </a>
+        — Jewellery / Design on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/try-on">
+         Try On
+        </a>
+        — Jewellery / Try On on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/account">
+         Account
+        </a>
+        — Jewellery / Account on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+       <li>
+        <a href="/contact">
+         Contact
+        </a>
+        — Jewellery / Contact on TWQEET Intelligence. Bait-aldhahab-jewellery app.
+       </li>
+      </ul>
+     </nav>
+    </main>
+   </div>
+  </div>
+ </body>
+</html>
